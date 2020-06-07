@@ -554,14 +554,17 @@ var appWidget = {
    * @param messageTemplate 
    * @returns {string}
    */
-  customizeMessage: function (rep, messageTemplate) {
+  customizeMessage: function (rep, messageTemplate, messageFallback) {
     var messageContent = messageTemplate;
     var supportedRepFields = ['twitter_handle', 'state_code', 'state_name'];
 
     for (var repField of supportedRepFields) {
-      if (messageContent.indexOf('{' + repField + '}') > -1 && rep.hasOwnProperty(repField) && rep[repField]) {
-        var repFieldPrefix = repField === 'twitter_handle' ? '@' : '';
-        messageContent = messageContent.replace('{' + repField + '}',  repFieldPrefix + rep[repField]);
+      if (messageContent.indexOf('{' + repField + '}') > -1) {
+         var fieldExists = rep.hasOwnProperty(repField) && rep[repField];
+         if (!fieldExists) return messageFallback;
+
+          var repFieldPrefix = repField === 'twitter_handle' ? '@' : '';
+          messageContent = messageContent.replace('{' + repField + '}',  repFieldPrefix + rep[repField]);
       }
     }
 
@@ -629,7 +632,7 @@ var appWidget = {
       jQuery('.summary-details .district', elm).text(rep.district);
       jQuery('.summary-details .chamber', elm).text(rep.chamber);
 
-      jQuery('a.widget-twitter', elm).attr('href', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(appWidget.customizeMessage(rep, appWidget.settings.twitter.text)) + '&hashtags=' + encodeURIComponent(appWidget.settings.twitter.hashtags));
+      jQuery('a.widget-twitter', elm).attr('href', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(appWidget.customizeMessage(rep, appWidget.settings.twitter.text, appWidget.settings.twitter.textFallback)) + '&hashtags=' + encodeURIComponent(appWidget.settings.twitter.hashtags));
       jQuery('a.widget-facebook', elm).attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(appWidget.settings.facebook.link) + '&description=' + encodeURIComponent(appWidget.settings.facebook.description));
 
       if (appWidget.selectedTab === 'representatives') {
