@@ -142,6 +142,7 @@
       var emailAction = '[YOUR_MESSAGE_HERE]';
 
       var twitterText = 'Learn where your representatives stand on police violence and demand action now! http://JoinCampaignZero.org/action';
+      var twitterTextFallback = 'Learn where your representatives stand on police violence and demand action now! http://JoinCampaignZero.org/action';
       var twitterHashTags = 'CampaignZero';
 
       var facebookLink = 'http://www.joincampaignzero.org/action';
@@ -191,6 +192,9 @@
 
       if($elm.data('widget-twitter-text')) {
         twitterText = $elm.data('widget-twitter-text');
+      }
+      if($elm.data('widget-twitter-text-fallback')) {
+        twitterTextFallback = $elm.data('widget-twitter-text-fallback');
       }
       if($elm.data('widget-twitter-hashtags')) {
         twitterHashTags = $elm.data('widget-twitter-hashtags');
@@ -248,6 +252,9 @@
       if(scriptTag.getAttribute('data-widget-twitter-text')) {
         twitterText = scriptTag.getAttribute('data-widget-twitter-text');
       }
+      if(scriptTag.getAttribute('data-widget-twitter-text-fallback')) {
+        twitterTextFallback = scriptTag.getAttribute('data-widget-twitter-text-fallback');
+      }
       if(scriptTag.getAttribute('data-widget-twitter-hashtags')) {
         twitterHashTags = scriptTag.getAttribute('data-widget-twitter-hashtags');
       }
@@ -289,6 +296,7 @@
         },
         twitter: {
           text: twitterText,
+          textFallback: twitterTextFallback,
           hashtags: twitterHashTags
         },
         facebook: {
