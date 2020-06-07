@@ -5,7 +5,8 @@
   var jqueryVersion = '1.12.3';
   var scriptTag;
   var pathLocal = './app/';
-  var pathCDN = 'https://s3.amazonaws.com/campaign-zero-widget/';
+  var pathCDN = 'https://embed.endqualifiedimmunity.com/app/';
+  var serverPath = 'https://embed.endqualifiedimmunity.com/';
   var elementName = 'campaign-zero-widget';
   var loadedCSS = false;
   var loadedJS = false;
@@ -104,7 +105,7 @@
     scriptTag = targetScripts[targetScripts.length - 1];
 
     // check if this is production
-    var assets = (scriptTag.src && scriptTag.src === 'https://embed.joincampaignzero.org/widget.js') ? pathCDN : pathLocal;
+    var assets = (scriptTag.src && scriptTag.src === serverPath + 'widget.js') ? pathCDN : pathLocal;
 
     // load widget css before DOM ready
     loadCss(assets + 'style.css?v=' + version, function(){
@@ -123,7 +124,7 @@
 
       window.addEventListener('resize', resizeHandeler);
 
-      var isProduction = (scriptTag.src === 'https://embed.joincampaignzero.org/widget.js');
+      var isProduction = (scriptTag.src === serverPath + 'widget.js');
 
       var validWidgetTypes = ['default', 'resistance'];
 
@@ -264,8 +265,8 @@
 
       window.CAMPAIGN_ZERO_WIDGET = {
         environment: isProduction ? 'production' : 'development',
-        base: isProduction ? 'https://embed.joincampaignzero.org/app/' : './app/',
-        data: isProduction ? 'https://embed.joincampaignzero.org/data/' : './data/',
+        base: isProduction ? serverPath + 'app/' : './app/',
+        data: isProduction ? serverPath + 'data/' : './data/',
         type: widgetType,
         api: {
           base: isProduction ? 'https://api.civil.services/v1/' : 'http://127.0.0.1:5000/v1/',
