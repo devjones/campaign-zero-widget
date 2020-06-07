@@ -549,6 +549,26 @@ var appWidget = {
   },
 
   /**
+   * Populates a message template to generate customized content based on representative's data
+   * @param rep
+   * @param messageTemplate 
+   * @returns {string}
+   */
+  customizeMessage: function (rep, messageTemplate) {
+    var messageContent = messageTemplate;
+    var supportedRepFields = ['twitter_handle', 'state_code', 'state_name'];
+
+    for (var repField of supportedRepFields) {
+      if (messageContent.indexOf('{' + repField + '}') > -1 && rep.hasOwnProperty(repField) && rep[repField]) {
+        var repFieldPrefix = repField === 'twitter_handle' ? '@' : '';
+        messageContent = messageContent.replace('{' + repField + '}',  repFieldPrefix + rep[repField]);
+      }
+    }
+
+    return messageContent;
+  },
+
+  /**
    * Generate Representative Details
    * @param rep
    * @param bills
@@ -609,7 +629,7 @@ var appWidget = {
       jQuery('.summary-details .district', elm).text(rep.district);
       jQuery('.summary-details .chamber', elm).text(rep.chamber);
 
-      jQuery('a.widget-twitter', elm).attr('href', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(appWidget.settings.twitter.text) + '&hashtags=' + encodeURIComponent(appWidget.settings.twitter.hashtags));
+      jQuery('a.widget-twitter', elm).attr('href', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(appWidget.customizeMessage(rep, appWidget.settings.twitter.text)) + '&hashtags=' + encodeURIComponent(appWidget.settings.twitter.hashtags));
       jQuery('a.widget-facebook', elm).attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(appWidget.settings.facebook.link) + '&description=' + encodeURIComponent(appWidget.settings.facebook.description));
 
       if (appWidget.selectedTab === 'representatives') {
